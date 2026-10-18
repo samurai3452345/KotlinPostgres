@@ -1,0 +1,32 @@
+### Сведения об API — 200 OK
+GET http://localhost:8080/
+
+### Создать пользователя — 201 Created (повторный email — 409 Conflict)
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{"name":"Анна","email":"anna@example.com"}
+
+### Список пользователей — 200 OK
+GET http://localhost:8080/users
+
+### Query-параметры: фильтр, размер страницы и смещение
+GET http://localhost:8080/users?name=Ан&limit=10&offset=0
+
+### Path-параметр: поиск по ID — 200 OK или 404 Not Found
+GET http://localhost:8080/users/1
+
+### Ошибочный ID — 400 Bad Request
+GET http://localhost:8080/users/abc
+
+### Ошибочный query-параметр — 400 Bad Request
+GET http://localhost:8080/users?limit=0
+
+### Некорректные данные — 400 Bad Request
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{"name":"","email":"wrong"}
+
+### Удалить пользователя — 204 No Content, повторное удаление — 404
+DELETE http://localhost:8080/users/1
