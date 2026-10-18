@@ -10,6 +10,7 @@ import io.ktor.server.plugins.UnsupportedMediaTypeException
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
+import io.ktor.server.http.content.staticResources
 import io.ktor.server.routing.routing
 import kotlinx.serialization.json.Json
 import kotlin.coroutines.cancellation.CancellationException
@@ -41,5 +42,9 @@ fun Application.module(repository: UserRepository = UserRepository()) {
             call.respond(HttpStatusCode.UnsupportedMediaType, ErrorResponse("Используйте Content-Type: application/json"))
         }
     }
-    routing { userRoutes(repository) }
+    routing {
+        staticResources("/", "static")
+        staticResources("/assets", "static")
+        userRoutes(repository)
+    }
 }

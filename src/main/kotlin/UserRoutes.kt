@@ -20,7 +20,7 @@ import io.ktor.server.routing.route
 private val emailPattern = Regex("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")
 
 fun Route.userRoutes(repository: UserRepository) {
-    get("/") { call.respond(ApiInfo("Kotlin Users API", "/users")) }
+    get("/api") { call.respond(ApiInfo("Kotlin Users API", "/users")) }
     route("/users") {
         get {
             val name = call.request.queryParameters["name"]?.trim()

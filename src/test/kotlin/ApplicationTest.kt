@@ -21,12 +21,34 @@ import kotlin.test.assertTrue
 
 class ApplicationTest {
     @Test
-    fun `root describes the API as JSON`() = testApplication {
+    fun `API information is available as JSON`() = testApplication {
         application { module() }
-        val response = client.get("/")
+        val response = client.get("/api")
         assertEquals(HttpStatusCode.OK, response.status)
         assertEquals(ContentType.Application.Json, response.contentType()?.withoutParameters())
         assertEquals("/users", Json.parseToJsonElement(response.bodyAsText()).jsonObject["users"]?.jsonPrimitive?.content)
+    }
+
+    @Test
+    fun `root serves the frontend HTML`() = testApplication {
+        application { module() }
+        val response = client.get("/")
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(ContentType.Text.Html, response.contentType()?.withoutParameters())
+        assertTrue(response.bodyAsText().contains("<html lang=\"ru\">"))
+        assertTrue(response.bodyAsText().contains("/assets/app.js"))
+    }
+
+    @Test
+    fun `frontend assets are served with correct types`() = testApplication {
+        application { module() }
+        for ((path, type) in listOf("styles.css" to "text/css", "app.js" to "text/javascript", "favicon.svg" to "image/svg+xml")) {
+            val response = client.get("/assets/$path")
+            assertEquals(HttpStatusCode.OK, response.status, path)
+            assertEquals(type, response.contentType()?.withoutParameters().toString(), path)
+            assertTrue(response.bodyAsText().isNotBlank())
+        }
+        assertEquals(HttpStatusCode.NotFound, client.get("/assets/missing.css").status)
     }
 
     @Test

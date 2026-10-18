@@ -1,5 +1,8 @@
-### Сведения об API — 200 OK
+### Веб-интерфейс — 200 OK, HTML
 GET http://localhost:8080/
+
+### Сведения об API — 200 OK, JSON
+GET http://localhost:8080/api
 
 ### Создать пользователя — 201 Created (повторный email — 409 Conflict)
 POST http://localhost:8080/users

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7fb">
+  <meta name="description" content="Круг — простое пространство для управления пользователями.">
+  <title>Пользователи — Круг</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+  <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M16 3a4 4 0 0 1 0 8M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="7.3"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M6.1 6.1A8.3 8.3 0 0 1 20 12M4 12a8.3 8.3 0 0 0 13.9 5.9"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3 7 9 6 9-6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 3h7v7M10 14 21 3M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/></symbol>
+  </svg>
+
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="Круг — главная"><span class="brand-mark"><span></span></span>круг<span class="brand-dot">.</span></a>
+    <div class="workspace"><span class="workspace-avatar">К</span><div><strong>Моё пространство</strong><span>Управление пользователями</span></div></div>
+    <div class="nav-caption">ПРОСТРАНСТВО</div>
+    <nav aria-label="Основная навигация">
+      <a class="nav-item active" href="/" aria-current="page"><svg class="icon"><use href="#i-users"/></svg>Пользователи<span class="nav-indicator"></span></a>
+      <a class="nav-item" href="/api" target="_blank" rel="noopener"><svg class="icon"><use href="#i-info"/></svg>Об API<svg class="icon external"><use href="#i-external"/></svg></a>
+    </nav>
+    <div class="sidebar-bottom"><div class="small-brand">Меньше лишнего.<br><strong>Больше порядка.</strong></div><div class="sidebar-footnote">Ваши контакты в одном месте</div></div>
+  </aside>
+
+  <div class="page">
+    <header class="topbar"><div class="breadcrumb">Пространство<svg class="icon"><use href="#i-arrow"/></svg><strong>Пользователи</strong></div><div id="connection" class="connection" role="status"><span></span><span id="connection-text">Подключение…</span></div></header>
+    <main>
+      <section class="page-heading" aria-labelledby="page-title">
+        <div><div class="eyebrow">ВСЁ НАЧИНАЕТСЯ С ЛЮДЕЙ</div><h1 id="page-title">Ваш круг пользователей<span>.</span></h1><p>Добавляйте контакты, находите нужных людей и поддерживайте порядок.</p></div>
+        <button class="button button-primary heading-add" id="focus-create" type="button"><svg class="icon"><use href="#i-plus"/></svg>Новый пользователь</button>
+      </section>
+
+      <div class="content-grid">
+        <section class="panel directory" aria-labelledby="directory-title">
+          <div class="panel-heading"><div class="title-with-count"><h2 id="directory-title">Пользователи</h2><span class="count-badge" id="user-count" title="Количество на текущей странице">0</span></div><button class="icon-button" id="refresh" type="button" aria-label="Обновить список" title="Обновить список"><svg class="icon"><use href="#i-refresh"/></svg></button></div>
+          <form class="search-bar" id="search-form" role="search">
+            <div class="search-input"><svg class="icon"><use href="#i-search"/></svg><label class="sr-only" for="search">Поиск пользователей</label><input id="search" name="search" type="search" placeholder="Найти пользователя…" autocomplete="off"><button class="clear-search" id="clear-search" type="button" aria-label="Сбросить поиск" hidden><svg class="icon"><use href="#i-close"/></svg></button></div>
+            <label class="sr-only" for="search-mode">Способ поиска</label><select id="search-mode" name="mode"><option value="name">По имени</option><option value="id">По ID</option></select>
+            <button class="button button-search" type="submit">Найти</button>
+          </form>
+          <p class="filter-description" id="filter-description" hidden></p>
+          <div id="list-region" aria-live="polite" aria-busy="true">
+            <div class="table-wrap" id="table-wrap" hidden><table><thead><tr><th scope="col">Пользователь</th><th scope="col">Электронная почта</th><th scope="col">ID</th><th scope="col"><span class="sr-only">Действия</span></th></tr></thead><tbody id="users-body"></tbody></table></div>
+            <div class="empty-state" id="empty-state"><div class="empty-art"><span class="empty-orbit orbit-one"></span><span class="empty-orbit orbit-two"></span><span class="empty-avatar"><svg class="icon"><use href="#i-users"/></svg></span><span class="empty-plus"><svg class="icon"><use href="#i-plus"/></svg></span></div><h3 id="empty-title">Загружаем пользователей</h3><p id="empty-description">Список появится через мгновение.</p><button class="button button-soft" id="empty-action" type="button" hidden><svg class="icon"><use href="#i-plus"/></svg><span>Добавить первого</span></button></div>
+          </div>
+          <footer class="table-footer"><span id="page-description">Загрузка…</span><div class="pagination"><label for="page-size">На странице</label><select id="page-size"><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option><option value="50">50</option></select><div class="page-buttons"><button class="icon-button" id="previous-page" type="button" aria-label="Предыдущая страница" disabled><svg class="icon previous"><use href="#i-arrow"/></svg></button><button class="icon-button" id="next-page" type="button" aria-label="Следующая страница" disabled><svg class="icon"><use href="#i-arrow"/></svg></button></div></div></footer>
+        </section>
+
+        <aside class="create-column">
+          <section class="panel create-panel" aria-labelledby="create-title"><div class="create-icon"><svg class="icon"><use href="#i-plus"/></svg></div><h2 id="create-title">Знакомьтесь, новый человек</h2><p class="panel-description">Всего два поля — и пользователь<br class="desktop-break"> станет частью вашего круга.</p>
+            <form id="create-form">
+              <div class="field"><label for="name">Имя пользователя</label><input id="name" name="name" placeholder="Например, Анна Иванова" autocomplete="name" required maxlength="100"><span class="field-hint">Как обращаться к пользователю</span></div>
+              <div class="field"><label for="email">Электронная почта</label><div class="input-with-icon"><svg class="icon"><use href="#i-mail"/></svg><input id="email" name="email" type="email" placeholder="anna@example.com" autocomplete="email" required maxlength="254"></div></div>
+              <p class="form-error" id="create-error" role="alert" hidden></p>
+              <button class="button button-primary create-submit" id="create-submit" type="submit"><svg class="icon"><use href="#i-plus"/></svg><span>Добавить пользователя</span></button>
+            </form>
+            <div class="form-footnote"><svg class="icon"><use href="#i-check"/></svg>Каждый email уникален</div>
+          </section>
+          <div class="storage-note"><svg class="icon"><use href="#i-info"/></svg><p><strong>Небольшое напоминание</strong>Данные сохраняются до перезапуска сервера. После перезапуска список будет пустым.</p></div>
+        </aside>
+      </div>
+      <footer class="page-footer"><span>Создано, чтобы быть проще.</span><span id="last-updated">Круг · Пользователи</span></footer>
+    </main>
+  </div>
+
+  <dialog id="delete-dialog" aria-labelledby="delete-title" aria-describedby="delete-description"><div class="dialog-icon"><svg class="icon"><use href="#i-trash"/></svg></div><h2 id="delete-title">Удалить пользователя?</h2><p id="delete-description"></p><p class="dialog-error" id="delete-error" role="alert" hidden></p><div class="dialog-actions"><button class="button button-secondary" id="cancel-delete" type="button" autofocus>Оставить</button><button class="button button-danger" id="confirm-delete" type="button">Удалить</button></div></dialog>
+  <div id="toast" class="toast" role="status" hidden><svg class="icon"><use href="#i-check"/></svg><span id="toast-text"></span><button class="icon-button" id="close-toast" type="button" aria-label="Закрыть уведомление"><svg class="icon"><use href="#i-close"/></svg></button></div>
+  <noscript><div class="noscript">Для работы интерфейса включите JavaScript в браузере.</div></noscript>
+</body>
+</html>
